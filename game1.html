@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+	body
+	{
+		background-color:skyblue;
+	}
+button
+{
+	display:inline;
+	 position:relative;
+	 top:-630px;
+	left:770px;
+	width:100px;
+	height:30px;
+}
+#div3
+{   position:relative;
+	left:-25px;
+	color:blue;
+	width:200px;
+}
+</style>
+
+</head>
+	<body>
+		<div id="div1" style="display:inline;">
+<canvas id="canvasGame" width="750px" height="650px"></canvas>
+<script type="text/javascript">
+		var canvas;
+		var CanvasContext;
+		var ballx=200;
+		var bally=200;
+		var paddleL=100;
+		var paddleR=100;
+		var ballSpeedX=0;
+		var ballSpeedY=0;
+		var paddleH=150;
+        var count=3;
+        var score=0;
+        var scoreadd=50;
+		function start(bsx,bsy)
+		{ count=3;
+          ballSpeedX=3;
+          ballSpeedY=4;
+		}
+        window.onload=function(){
+        canvas=document.getElementById("canvasGame");
+
+        canvasContext=canvas.getContext("2d");
+       canvas.addEventListener("mousemove",function(event)
+       {
+          paddleL=getCords(event)-50;
+       }
+       );
+       canvas.addEventListener("touchstart",function(event)
+       {
+         paddleL=getCords(event)-50;
+       }
+       );
+       
+       
+        setInterval(both,10);
+    
+    }
+        function position()
+        {
+        	 canvasContext.fillStyle="white";//background
+        canvasContext.fillRect(0,0,750,650);
+        canvasContext.fillStyle = "black"; //red #c82124
+canvasContext.beginPath();
+canvasContext.arc(ballx,bally,10,0,Math.PI*2,true);
+canvasContext.closePath();
+canvasContext.fill();//ball
+        canvasContext.fillStyle="red";//left paddle
+        canvasContext.fillRect(0,paddleL,10,paddleH);
+        canvasContext.fillStyle="#41f25b";//right paddle
+        canvasContext.fillRect(740,paddleR,10,paddleH);
+        canvasContext.fillStyle="blue";	
+        canvasContext.font = "20px Arial";
+        canvasContext.fillText("your life:",250,50);
+        canvasContext.font = "20px Arial";
+        canvasContext.fillText(count,330,50);
+        canvasContext.font = "20px Arial";
+        canvasContext.fillText("your score:",360,50);
+        canvasContext.font = "20px Arial";
+        canvasContext.fillText(score,470,50);
+        }
+        function reset()
+        {
+        	ballx=300;
+		    bally=300;
+        }
+                 
+function moveBall()
+{
+ ballx=ballx+ballSpeedX;
+ bally=bally+ballSpeedY;
+ if(bally<=10||bally>=640)
+ 	ballSpeedY=-ballSpeedY;
+if(ballx>=735)
+ 	ballSpeedX=-ballSpeedX;
+ if(ballx<=15)
+ {
+if(bally>=paddleL && bally<=paddleL+paddleH)
+ 	{    		ballSpeedX=-ballSpeedX;
+            score=score+scoreadd;
+       
+ 	}
+else if(ballx<=0)
+{ count--;
+	    if(count<=0)
+       {count=3;
+
+       	alert("Your 3 chances has exceeded...\nGAME OVER\nyour score is:"+score);
+       	score=0;
+       	ballx=300;
+		    bally=300;
+ballSpeedX=0;
+          ballSpeedY=0;
+       }
+    
+ballSpeedX=-ballSpeedX;
+reset();
+}
+}
+ paddleR=bally-(paddleH/2);
+}
+function both()
+{
+
+  moveBall();	
+  position();
+}
+function getCords(event) {
+  var y = event.clientY;
+  return y;
+}
+function pause()
+{
+	confirm("Game has paused..Press OK to continue");
+}
+function level(p,bsx,bsy)
+{
+	paddleH=p;
+	ballSpeedX=bsx;
+	ballSpeedY=bsy;
+	if(p==130)
+		scoreadd=100;
+		else if(p==110)
+		scoreadd=150;
+	{
+
+	}
+}
+function help()
+{
+	var x=document.getElementById("div3");
+	x.innerHTML="Press Start to start the game..\n press pause to pause the game..\n ...there are three different levels";
+}
+
+	</script>
+
+
+</div>
+	<div id="div2">
+		<button onclick="start(4,3)">START</button></br></br>
+		<button onclick="pause()">PAUSE</button></br></br></br></br></br></br>
+		<button onclick="level(150,4,3)">LEVEL 1</button></br></br>
+		<button onclick="level(130,5,4)">LEVEL 2</button></br></br>
+		<button onclick="level(110,6,4)">LEVEL 3</button></br></br></br></br></br></br>
+		<button onclick="help()">HELP</br></br><div id="div3">
+	</div></button></br>
+	</div>
+	
+	</body>
+
+</html>

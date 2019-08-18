@@ -1,0 +1,176 @@
+<html>
+<head>
+<style type="text/css">
+	#canvas_game
+	{
+		position:relative;
+		left:300px;
+		top:20px;
+		border:15px solid yellow;
+	}
+	
+	body
+	{
+		background-color:purple;
+	}
+#div1
+	{
+		
+		color:red;
+		font-size:40px;
+		font-family:"Gabriola";
+		
+	}
+	
+</style>        
+	</head>
+	<body>
+               
+		<canvas id="canvas_game" width="750px" height="570px"></canvas>
+		<script type="text/javascript">
+			var snakeW=15;
+			var len=4;
+			var snake=[];
+			var sankeX;
+			var sankeY;
+			var dir="right";
+			var foodX;
+			var foodY;
+			var s=50;
+			var score=0;
+		var	canvas=document.getElementById("canvas_game");
+		
+document.addEventListener("keydown",key);
+       var canvasContext=canvas.getContext("2d");
+        
+         	canvasContext.fillStyle="black";//background
+        canvasContext.fillRect(0,0,750,600);
+        	
+        
+        function randomise()
+        {
+         foodX=750*(Math.random())-7.5;
+	      foodY=570*(Math.random())-7.5;
+        }
+        function drawSnake(x,y)
+         {
+
+        canvasContext.fillStyle="blue";//snake fill
+        canvasContext.fillRect(x*snakeW,y*snakeW,snakeW,snakeW);
+        canvasContext.fillStyle="white";//snake boundary
+        canvasContext.strokeRect(x*snakeW,y*snakeW,snakeW,snakeW);
+         }
+         function key(event)
+         {
+                  	if(event.keyCode==37&&dir!="right")
+                       {dir="left";}
+                    else if(event.keyCode==39&&dir!="left")
+                        {dir="right";}
+                    else if(event.keyCode==38&&dir!="down")
+                        {dir="up";}
+                 else if(event.keyCode==40&&dir!="up")
+                        {dir="down";}
+                    else if(event.keyCode==32)
+                        {alert("game has paused");}
+
+         }
+         function createSnake()
+         {
+for(var i=len-1;i>=0;i--)
+{
+snake.push({
+	x:i,y:0
+})
+}
+}
+function food()
+{ 
+ canvasContext.fillStyle="green";//food
+
+        canvasContext.fillRect(foodX,foodY,snakeW,snakeW);
+
+}
+
+createSnake();
+randomise();
+interval(s);
+function moveSnake()
+{  
+	canvasContext.clearRect(0,0,750,570);
+	var x=document.getElementById("div1");
+	x.innerHTML="YOUR SCORE: "+score;
+	 	canvasContext.fillStyle="black";//background
+        canvasContext.fillRect(0,0,750,570);
+       
+for(i=0;i<snake.length;i++)
+{
+	var x=snake[i].x;
+	var y=snake[i].y;
+drawSnake(x,y);
+}
+
+snake.pop();
+
+var headX=snake[0].x;
+var headY=snake[0].y;
+if(dir=="left")
+headX--;
+else if(dir=="right")
+headX++;
+else if(dir=="up")
+headY--;
+else if(dir=="down")
+{headY++;}
+console.log(headX);
+if(headY<0||headY>37||headX<0||headX>=49)
+{   
+	alert("GAME OVER");
+	createSnake();
+}
+for(var i=1;i<snake.length;i++)
+{
+  if(snake[i].x==headX&&snake[i].y==headY)
+{
+	alert("GAME OVER");
+}
+}
+  	
+
+
+  
+var newHead=
+{
+x:headX,
+y:headY
+}
+snake.unshift(newHead);
+food(); 
+//console.log(headX*15);
+//console.log(headY*15);
+//console.log(foodX);
+//console.log(foodY);
+if(((headX*15)-15)<=foodX&&foodX<=((headX*15)+15)&&((headY*15)-15)<=foodY&&foodY<=((headY*15)+15))
+	{   score++;
+		len=len+100;
+		snake.push({
+	x:len,
+	y:0
+})
+		
+		randomise();
+		food();
+	}
+}
+function game()
+{
+
+}
+//moveSnake();
+function interval(s)
+{
+setInterval(moveSnake,s);
+}
+	</script>
+	<div id="div1"></div>
+	</body>
+</html>
